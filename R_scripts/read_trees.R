@@ -10,5 +10,7 @@ setwd("~/Dropbox/sDiv_working_group/sELDIG_extinction_estimate")
 trees<-readRDS('data/Hagen_phylogenies.rds')
 
 # corresponding parameters in a dataframe
-paras<-readRDS('data/Hagen_parameters.rds')
+# paras<-readRDS('data/Hagen_parameters.rds')
 
+i<-1
+i.tree<-trees[[i]]
