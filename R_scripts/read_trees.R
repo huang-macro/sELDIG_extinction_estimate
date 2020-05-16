@@ -32,8 +32,8 @@ phylos<-trees[is.tree]
 
 for (i in 1:length(phylos)){
 	p<-drop.extinct(phylos[[i]])
-	if (length(p$tip.label)>50){
-		p$edge.length[which(p$edge.length==0)]<-0.01
+	if (length(p$tip.label)>50 & min(p$edge.length)>0){
+		# p$edge.length[which(p$edge.length==0)]<-0.01
 		write.tree(p, paste("bamm_build/good_trees/tree_", i, ".tre", sep=''))
 	}
 }
