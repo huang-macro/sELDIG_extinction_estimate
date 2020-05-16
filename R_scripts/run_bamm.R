@@ -1,6 +1,6 @@
-### Prep data for BAMM by Dan Rabosky (http://bamm-project.org)
+### pre- and post-BAMM (Dan Rabosky, http://bamm-project.org)
 
-install.packages('BAMMtools',repos='http://cran.uni-muenster.de/')
+# install.packages('BAMMtools',repos='http://cran.uni-muenster.de/')
 
 library(BAMMtools)
 
