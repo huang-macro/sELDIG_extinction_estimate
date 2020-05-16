@@ -16,7 +16,7 @@
 modeltype = speciationextinction        
 # Specify "speciationextinction" or "trait" analysis
                                   
-treefile = good_trees/tree_342.tre
+treefile = good_trees/tree_396.tre
 # File name of the phylogenetic tree to be analyzed
 
 runInfoFilename = run_info.txt
@@ -74,16 +74,16 @@ expectedNumberOfShifts = 1.0
 #     expectedNumberOfShifts = 1.0 for small trees (< 500 tips)
 #     expectedNumberOfShifts = 10 or even 50 for large trees (> 5000 tips) 
  
-lambdaInitPrior = 1.0
+lambdaInitPrior = 18.4
 # Prior (rate parameter of exponential) on the initial lambda value for rate
 # regimes
 
-lambdaShiftPrior = 0.05
+lambdaShiftPrior = 0.003
 # Prior (std dev of normal) on lambda shift parameter for rate regimes
 # You cannot adjust the mean of this distribution (fixed at zero, which is
 # equal to a constant rate diversification process)
 
-muInitPrior = 1.0
+muInitPrior = 18.4
 # Prior (rate parameter of exponential) on extinction rates  
 
 lambdaIsTimeVariablePrior = 1
@@ -94,14 +94,14 @@ lambdaIsTimeVariablePrior = 1
 # MCMC SIMULATION SETTINGS & OUTPUT OPTIONS
 ################################################################################
 
-numberOfGenerations = 5000
+numberOfGenerations = 1000000
 # Number of generations to perform MCMC simulation
 
 mcmcOutfile = mcmc_out.txt
 # File name for the MCMC output, which only includes summary information about
 # MCMC simulation (e.g., log-likelihoods, log-prior, number of processes)
 
-mcmcWriteFreq = 500
+mcmcWriteFreq = 1000
 # Frequency in which to write the MCMC output to a file
 
 eventDataOutfile = event_data.txt
@@ -110,10 +110,10 @@ eventDataOutfile = event_data.txt
 # positions, marginal distributions etc can be reconstructed from this output.
 # See R package BAMMtools for working with this output
 
-eventDataWriteFreq = 100
+eventDataWriteFreq = 1000
 # Frequency in which to write the event data to a file
 
-printFreq = 50
+printFreq = 100000
 # Frequency in which to print MCMC status to the screen
 
 acceptanceResetFreq = 1000
