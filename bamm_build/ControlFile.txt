@@ -59,7 +59,7 @@ sampleProbsFilename = sample_probs.txt
 # Seed for the random number generator. 
 # If not specified (or is -1), a seed is obtained from the system clock
 
-overwrite = 0
+overwrite = 1
 # If True (1), the program will overwrite any output files in the current
 # directory (if present)
 
