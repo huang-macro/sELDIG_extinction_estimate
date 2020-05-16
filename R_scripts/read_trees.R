@@ -16,7 +16,7 @@ trees<-readRDS('data/Hagen_phylogenies.rds')
 # Not all items in the tree list are trees
 is.tree<-c()
 for (i in 1:length(trees)){
-	if (class(trees[[i]]) == "phylo") 
+	if (class(trees[[i]]) == "phylo") is.tree<-c(is.tree, i)
 }
 
 phylos<-trees[is.tree]
@@ -30,10 +30,17 @@ phylos<-trees[is.tree]
 ## branch lengths >0
 ## Here, I only select trees with >= 50 extant species
 
-for (i in 1:length(phylos)){
-	p<-drop.extinct(phylos[[i]])
+for (i in is.tree){
+	p<-drop.extinct(trees[[i]])
 	if (length(p$tip.label)>50 & min(p$edge.length)>0){
-		# p$edge.length[which(p$edge.length==0)]<-0.01
+		print(i)
 		write.tree(p, paste("bamm_build/good_trees/tree_", i, ".tre", sep=''))
 	}
 }
+
+# The original tree 396
+p<-trees[[396]]
+p
+plot(p)
+min(p$edge.length)
+length(is.extinct(p))
