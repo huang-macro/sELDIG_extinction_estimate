@@ -2,6 +2,7 @@
 
 # install.packages('BAMMtools',repos='http://cran.uni-muenster.de/')
 
+library(ape)
 library(BAMMtools)
 
 setwd("~/Dropbox/sDiv_working_group/sELDIG_extinction_estimate")
@@ -33,7 +34,7 @@ tip.rates<-getTipRates(ed)
 
 ###########################################################################
 ## Plot a colorful tree
-pdf("bamm_build/trial_plots.pdf", width=6, height=5)
+pdf("results/bamm_trial_plots.pdf", width=6, height=5)
 
 # the tree
 trial<-plot.bammdata(ed, lwd=2, labels=F, cex=0.5)
