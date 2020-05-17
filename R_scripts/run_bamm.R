@@ -14,7 +14,8 @@ setwd("~/Dropbox/sDiv_working_group/sELDIG_extinction_estimate")
 ###########################################################################
 ###########################################################################
 ## General prior block for BAMM analysis
-setBAMMpriors(p, outfile=NULL)
+tree<-read.tree("bamm_build/good_trees/tree_396.tre")
+setBAMMpriors(tree, outfile=NULL)
 
 ###########################################################################
 ###########################################################################
@@ -22,7 +23,6 @@ setBAMMpriors(p, outfile=NULL)
 ###########################################################################
 ###########################################################################
 ## Look at BAMM output
-tree<-read.tree("bamm_build/good_trees/tree_396.tre")
 events<-read.csv("bamm_build/event_data.txt")
 
 # Make a bammdata object
