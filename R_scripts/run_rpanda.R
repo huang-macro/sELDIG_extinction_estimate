@@ -4,20 +4,21 @@
 
 library(ape)
 library(RPANDA)
+library(BAMMtools)
 
 setwd("~/Dropbox/sDiv_working_group/sELDIG_extinction_estimate")
 
 # source("R_scripts/read_trees.R")
 
 # Function to test multiple models (fit.multi.rpanda)
-source("R_scripts/multiRPANDA.R")
+source("R_scripts/f_multiRPANDA.R")
 
 ###########################################################################
 ###########################################################################
 ###########################################################################
 ###########################################################################
 ###########################################################################
-## The same tree as for the BAMM analysis
+## The same tree as for the BAMM trial
 tree<-read.tree("bamm_build/good_trees/tree_396.tre")
 
 # parameters based on the BAMM output
@@ -60,5 +61,60 @@ for(i in 1:length(tryrun)){
 }
 dev.off()
 
+###########################################################################
+###########################################################################
+###########################################################################
+###########################################################################
+###########################################################################
+## Run RPANDA on all the trees that could be used in BAMM
+file_list<-list.files("bamm_build/good_trees")
 
+# Set up global initial models (output should not depend on these)
+b<-0.05; bs<-0.001; d<-0.01; ds<-0.001
+init.par<-list(c(b,d), 
+		 c(b,bs,d), 
+		 c(b,d,ds),
+		 c(b,bs,d,ds))
+
+# all the good trees
+
+# Loop through all the trees to run RPANDA
+out.list<-list()
+for(i in 1:length(file_list)){
+	# read a tree file
+	i.file<-paste("bamm_build/good_trees/", file_list[i], sep='')
+	i.tree<-read.tree(i.file)
+
+	# run RPANDA 
+	i.run<-fit.multi.rpanda(i.tree, init.par)
+	out.list[[i]]<-i.run
+}
+saveRDS(out.list, "results/rpanda_output_list.rds")
+
+###########################################################################
+## compare models (constant rates in all cases)
+best<-()
+for(i in 1:length(out.list)){
+	i.run<-out.list[[i]]
+	i.aicc<-c()
+	for(j in 1:length(i.run)) i.aicc[j]<-tryrun[[j]]$aicc
+	best[i]<-which.min(i.aicc)
+}
+
+# compare rates from the constant-rate model
+m1.b<-m1.d<-c()
+for(i in 1:length(out.list)){
+	i.run<-out.list[[i]][[1]]
+
+	m1.b[i]<-i.run$lamb_par
+	m1.d[i]<-i.run$mu_par
+}
+
+pdf("results/rpanda_constant_rates.pdf", height=7, width=5)
+par(mfrow=c(2,1), mar=c(5,5,1,1), las=1)
+hist(m1.b, breaks=15,
+	xlab='Speciation rate', main='', col="firebrick3")
+hist(m1.d, breaks=15,
+	xlab='Extinction rate', main='', col="skyblue2")
+dev.off()
 
