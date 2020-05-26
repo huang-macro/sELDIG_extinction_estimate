@@ -13,13 +13,15 @@ setwd("~/Dropbox/sDiv_working_group/sELDIG_extinction_estimate")
 # Function to test multiple models (fit.multi.rpanda)
 source("R_scripts/f_multiRPANDA.R")
 
+# get some info of the original trees
+ori.info<-read.csv("data/original_tree_info.csv")
+
 ###########################################################################
 ###########################################################################
 ###########################################################################
 ###########################################################################
 ###########################################################################
 ## Run RPANDA on all the trees that could be used in BAMM
-file_list<-list.files("bamm_build/good_trees")
 
 # Set up global initial models (output should not depend on these)
 b<-0.05; bs<-0.001; d<-0.01; ds<-0.001
@@ -28,14 +30,14 @@ init.par<-list(c(b,d),
 		 c(b,d,ds),
 		 c(b,bs,d,ds))
 
-# all the good trees
-
 # Loop through all the trees to run RPANDA
 out.list<-list()
-for(i in 1:length(file_list)){
+for(i in 1:nrow(ori.info)){
 	# read a tree file
-	i.file<-paste("bamm_build/good_trees/", file_list[i], sep='')
-	i.tree<-read.tree(i.file)
+	i.treefile<-paste("bamm_build/good_trees/", 
+					  ori.info$tree.id[i],
+					  ".tre", sep='')
+	i.tree<-read.tree(i.treefile)
 
 	# run RPANDA 
 	i.run<-fit.multi.rpanda(i.tree, init.par)
@@ -45,7 +47,10 @@ saveRDS(out.list, "results/rpanda_output_list.rds")
 
 ###########################################################################
 ## compare models (constant rates in all cases)
-best<-()
+out.list<-readRDS("results/rpanda_output_list.rds")
+
+# the best models
+best<-c()
 for(i in 1:length(out.list)){
 	i.run<-out.list[[i]]
 	i.aicc<-c()
@@ -68,6 +73,30 @@ hist(m1.b, breaks=15,
 	xlab='Speciation rate', main='', col="firebrick3")
 hist(m1.d, breaks=15,
 	xlab='Extinction rate', main='', col="skyblue2")
+dev.off()
+
+pdf("results/rpanda_constant_rates_treetraits.pdf", height=9, width=7)
+par(mfrow=c(3,2), mar=c(5,5,1,1), las=1)
+plot(log(ori.info$no.ex), m1.b,
+	xlab="log Number of extinct species",
+	ylab="Estimated speciation rate")
+plot(log(ori.info$no.ex), m1.d,
+	xlab="log Number of extinct species",
+	ylab="Estimated extinction rate")
+
+plot(ori.info$prop.ex, m1.b,
+	xlab="Prop. extinct species",
+	ylab="Estimated speciation rate")
+plot(ori.info$prop.ex, m1.d,
+	xlab="Prop. extinct species",
+	ylab="Estimated extinction rate")
+
+plot(ori.info$age, m1.b,
+	xlab="Max. age",
+	ylab="Estimated speciation rate")
+plot(ori.info$age, m1.d,
+	xlab="Max. age",
+	ylab="Estimated extinction rate")
 dev.off()
 
 ###########################################################################
