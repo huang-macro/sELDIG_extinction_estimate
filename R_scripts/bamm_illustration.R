@@ -48,10 +48,10 @@ for(i in 1:nrow(ori.info)){
 hist(prob.nos)
 hist(ori.info$age)
 
-pdf("results/bamm_prob_noshift_extinction.pdf", width=9, height=3)
+pdf("results/bamm_prob_noshift_treetraits.pdf", width=9, height=3)
 par(mfrow=c(1,3), las=1, mar=c(5,5,1,1))
-plot(ori.info$no.ex, prob.nos, 
-	xlab="Number of extinct species",
+plot(log(ori.info$no.ex), prob.nos, 
+	xlab="log Number of extinct species",
 	ylab="Prob. no rate shift")
 plot(ori.info$prop.ex, prob.nos,
 	xlab="Proportion of extinct species",
